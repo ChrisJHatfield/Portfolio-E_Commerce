@@ -101,21 +101,28 @@ def admin_orders(request):
 
 
 def admin_products(request):
-    return render(request, 'adminproducts.html')
+    all_products = ProductInfo.objects.all()
+    context = {
+        'all_products': all_products,
+    }
+    return render(request, 'adminproducts.html', context)
 
 
 def product_create(request):
-    #if 'Sandal' in request.POST:
-        
-    #if 'Clog' in request.POST:
-
-    #if 'WaterFriendly' in request.POST:
-
     return render(request, 'productcreate.html')
+
+def product_edit(request, product_id):
+    context = {
+        'product_to_edit': ProductInfo.objects.get(id=product_id),
+    }
+    return render(request, 'productedit.html', context)
 
 # Redirect Admin  Functions**************************
 def product_process_create(request):
     print(request.POST)
+    if "cancel" in request.POST:
+        return redirect('/dashboard/products')
+
     if request.POST['category'] == 'Sandal':
         print('created sandal')
         Sandal.objects.create(
@@ -140,6 +147,21 @@ def product_process_create(request):
             item_description = request.POST['item_description'],
             item_size = request.POST['item_size']
         )
+    return redirect('/dashboard/products')
+
+def product_process_edit(request, product_id):
+    product = ProductInfo.objects.get(id=product_id)
+    product.item_name = request.POST['item_name']
+    product.item_price = request.POST['item_price']
+    product.item_description = request.POST['item_description']
+    product.item_size = request.POST['item_size']
+    product.save()
+    print(product.item_name, product.item_description)
+    return redirect('/dashboard/products')
+
+def product_delete(request, product_id):
+    product = ProductInfo.objects.get(id=product_id)
+    product.delete()
     return redirect('/dashboard/products')
 
 # Redirect User Functions**************************

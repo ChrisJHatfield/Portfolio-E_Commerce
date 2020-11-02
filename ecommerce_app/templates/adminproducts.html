@@ -42,14 +42,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><img src="" alt="item_picture"></td>
-                        <td>{product.id}</td>
-                        <td>{product.name}</td>
-                        <td>{product.item_count}</td>
-                        <td>{context:product.item_sold}</td>
-                        <td><a href="">Edit</a><a href="">Delete</a></td>
-                    </tr>
+                    {% for product in all_products %}
+                        <tr>
+                            <td><img src="" alt="item_picture"></td>
+                            <td>{{product.id}}</td>
+                            <td>{{product.item_name}}</td>
+                            <td>{{product.store_count}}</td>
+                            <td>{context: product.item_sold}</td>
+                            <td>
+                                <a href="/dashboard/product/edit/{{product.id}}">Edit</a>
+                                <a href="/dashboard/product/delete/{{product.id}}">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
