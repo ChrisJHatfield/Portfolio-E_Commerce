@@ -18,7 +18,8 @@ urlpatterns = [
 
     # Redirect Admin Paths*********************************
     path('dashboard/product/process_create', views.product_process_create),
-    path('dashboard/product/process_edit/<int:product_id>', views.product_process_edit),
+    path('dashboard/product/process_edit/<int:product_id>',
+         views.product_process_edit),
     path('dashboard/product/delete/<int:product_id>', views.product_delete),
     path('admin_logout', views.admin_logout),
     path('admin_login', views.admin_login),
@@ -28,4 +29,9 @@ urlpatterns = [
     path('user_login', views.user_login),
     path('user_register', views.user_register),
     path('addtocart', views.addtocart),
+
+
+    # Trial Run    ----> Might need this for modal?
+    # path('dashboard/product/deleteconfirm/<int:product_id>', views.productdelete),
+
 ]
