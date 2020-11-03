@@ -27,7 +27,7 @@
 
 <body>
 
-    <header>
+    <header style="display:flex">
         <h1>Dashboard</h1>
         <div>
             <p><a href="/dashboard/orders">Orders</a></p>
@@ -75,9 +75,78 @@
                         <td>{context: product.item_sold}</td>
                         <td>
                             <a href="/dashboard/product/edit/{{product.id}}">Edit</a>
+                            <a href="#" data-toggle="modal" data-target="#deleteProduct">
+                                Modal
+                            </a>
+                            <div class="modal" tabindex="-1" role="dialog" id="deleteProduct">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Are you sure you want to delete?</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/dashboard/product/process_edit/{{product_to_edit.id}}"
+                                                method="post">
+                                                {% csrf_token %}
+                                                <main>
+                                                    <div id="name">
+                                                        <p>
+                                                            <label>Name</label>
+                                                            <input type="text" name="item_name"
+                                                                value="{{product_to_edit.item_name}}">
+                                                        </p>
+                                                    </div>
+                                                    <div id="price">
+                                                        <p>
+                                                            <label>Price</label>
+                                                            <input type="number" step="any" name="item_price"
+                                                                value="{{product_to_edit.item_price}}">
+                                                        </p>
+                                                    </div>
+                                                    <div id="description">
+                                                        <p>
+                                                            <label>Description</label>
+                                                            <textarea
+                                                                name="item_description">{{product_to_edit.item_description}}</textarea>
+                                                        </p>
+                                                    </div>
+                                                    <div id="size">
+                                                        <p>
+                                                            <label>Size</label>
+                                                            <select name="item_size">
+                                                                <option value="sml">Small</option>
+                                                                <option value="med">Medium</option>
+                                                                <option value="lrg">Large</option>
+                                                            </select>
+                                                        </p>
+                                                    </div>
+                                                    <div id="actions">
+                                                        <a href="/dashboard/products"><button
+                                                                id="cancel">Cancel</button></a>
+                                                        <a href="#"><button type="submit" value="Submit"
+                                                                id="update">Update</button></a>
+                                                    </div>
+                                                </main>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cancel</button>
+                                            <a href="/dashboard/product/delete/{{product.id}}"><button
+                                                    class="btn btn-primary">Confirm Delete (from query)</button></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
                             <a href="/dashboard/product/delete/{{product.id}}">Delete</a>
                             <!-- works. but will only delete first product in list-->
-                            <a href="" data-toggle="modal" data-target="#deleteProduct">
+                            <a href="#" data-toggle="modal" data-target="#deleteProduct">
                                 Modal
                             </a>
                             <div class="modal" tabindex="-1" role="dialog" id="deleteProduct">
@@ -92,6 +161,7 @@
                                         <div class="modal-body">
                                             <p>name: {{product.item_name}}</p>
                                             <p>ID: {{product.id}}</p>
+
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
@@ -117,7 +187,7 @@
                             <a href="/dashboard/product/edit/{{product.id}}">Edit</a>
                             <a href="/dashboard/product/deleteconfirm/{{product.id}}">Delete</a>
                             <!-- works. but will only delete first product in list-->
-                            <a href="" data-toggle="modal" data-target="#deleteProduct">
+                            <a href="#" data-toggle="modal" data-target="#deleteProduct">
                                 Modal
                             </a>
                             <div class="modal" tabindex="-1" role="dialog" id="deleteProduct">
