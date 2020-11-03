@@ -199,7 +199,6 @@ def get_product_queryset(query=""):
     for q in queries:
         products = ProductInfo.objects.filter(
             Q(item_name__icontains=q)
-            # ~Q(item_description__icontains=q) add pipe before this. extending search.... ~Q = (not)
         ).distinct()
 
         for product in products:
