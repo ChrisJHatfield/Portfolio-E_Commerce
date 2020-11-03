@@ -43,15 +43,16 @@ def carts(request):
 def addtocart(request):
     return redirect('/show')
 
-def show(request, item_id): 
+
+def show(request, item_id):
     item = Sandal.objects.get(id=item_id)
     price = item.item_price
     context = {
         'items': item,
-        'price_list' : {'1':price, '2':price*2, '3':price*3},
-        'all_products' : ProductInfo.objects.all(),
+        'price_list': {'1': price, '2': price*2, '3': price*3},
+        'all_products': ProductInfo.objects.all(),
     }
-    print (context)
+    print(context)
     return render(request, 'show.html', context)
 # would it be item_in_cart_id??
 
@@ -61,6 +62,7 @@ def deleteitem(request, cart_id):
     deletethisitem = Cart.objects.get(id=cart_id)
     deletethisitem.delete()
     return redirect('/carts')
+
 
 def loginandreg(request):
     return render(request, 'loginandreg.html')
@@ -118,6 +120,7 @@ def admin_products(request):
 def product_create(request):
     return render(request, 'productcreate.html')
 
+
 def product_edit(request, product_id):
     context = {
         'product_to_edit': ProductInfo.objects.get(id=product_id),
@@ -125,6 +128,8 @@ def product_edit(request, product_id):
     return render(request, 'productedit.html', context)
 
 # Redirect Admin  Functions**************************
+
+
 def product_process_create(request):
     print(request.POST)
     if "cancel" in request.POST:
@@ -133,28 +138,29 @@ def product_process_create(request):
     if request.POST['category'] == 'Sandal':
         print('created sandal')
         Sandal.objects.create(
-            item_name = request.POST['item_name'],
-            item_price = request.POST['item_price'],
-            item_description = request.POST['item_description'],
-            item_size = request.POST['item_size']
+            item_name=request.POST['item_name'],
+            item_price=request.POST['item_price'],
+            item_description=request.POST['item_description'],
+            item_size=request.POST['item_size']
         )
     if request.POST['category'] == 'Clog':
         print('created clog')
         Clog.objects.create(
-            item_name = request.POST['item_name'],
-            item_price = request.POST['item_price'],
-            item_description = request.POST['item_description'],
-            item_size = request.POST['item_size']
+            item_name=request.POST['item_name'],
+            item_price=request.POST['item_price'],
+            item_description=request.POST['item_description'],
+            item_size=request.POST['item_size']
         )
     if request.POST['category'] == 'WaterFriendly':
         print('created waterfriendly')
         WaterFriendly.objects.create(
-            item_name = request.POST['item_name'],
-            item_price = request.POST['item_price'],
-            item_description = request.POST['item_description'],
-            item_size = request.POST['item_size']
+            item_name=request.POST['item_name'],
+            item_price=request.POST['item_price'],
+            item_description=request.POST['item_description'],
+            item_size=request.POST['item_size']
         )
     return redirect('/dashboard/products')
+
 
 def product_process_edit(request, product_id):
     product = ProductInfo.objects.get(id=product_id)
@@ -166,10 +172,26 @@ def product_process_edit(request, product_id):
     print(product.item_name, product.item_description)
     return redirect('/dashboard/products')
 
+# Method that didn't work...... import get_object_or_404 if using again.
+
+
+def productdelete(request, product_id):
+    obj = get_object_or_404(ProductInfo, id=product_id)
+    if request.method == "POST":
+        obj.delete()
+        return redirect('../../')
+    context = {
+        'product_to_edit': ProductInfo.objects.get(id=product_id),
+        "object": obj
+    }
+    return render(request, "product_delete.html", context)
+
+
 def product_delete(request, product_id):
     product = ProductInfo.objects.get(id=product_id)
     product.delete()
     return redirect('/dashboard/products')
+
 
 def get_product_queryset(query=""):
     queryset = []
