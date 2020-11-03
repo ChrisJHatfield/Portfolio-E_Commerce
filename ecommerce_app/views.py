@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Clog, WaterFriendly, Sandal, User, ProductInfo, Admin, Cart
 from datetime import datetime
+from django.db.models import Q
 import bcrypt
 
 # Render Page Functions****************************
@@ -102,9 +103,15 @@ def admin_orders(request):
 
 def admin_products(request):
     all_products = ProductInfo.objects.all()
+
+    query = ""
+    if request.GET:
+        query = request.GET['q']
     context = {
         'all_products': all_products,
+        'query': get_product_queryset(query)
     }
+
     return render(request, 'adminproducts.html', context)
 
 
@@ -164,6 +171,18 @@ def product_delete(request, product_id):
     product.delete()
     return redirect('/dashboard/products')
 
+def get_product_queryset(query=""):
+    queryset = []
+    queries = query.split(" ")
+    for q in queries:
+        products = ProductInfo.objects.filter(
+            Q(item_name__icontains=q)
+        ).distinct()
+
+        for product in products:
+            queryset.append(product)
+    return list(set(queryset))
+
 # Redirect User Functions**************************
 
 
@@ -205,8 +224,6 @@ def user_register(request):
         zipcode=request.POST['registered_zipcode'],
     )
     request.session['user_id'] = created_user.id
-
-    # request.session['user_id'] = created_user.id
     return redirect('/')
 
 
