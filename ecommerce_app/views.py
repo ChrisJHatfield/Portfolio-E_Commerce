@@ -127,6 +127,18 @@ def product_edit(request, product_id):
     }
     return render(request, 'productedit.html', context)
 
+# modal edit, might need to delete ++++++++++++++++++++++++++++++++++++++
+
+
+def modal_edit(request, product_id):
+    all_products = ProductInfo.objects.all()
+    context = {
+        # 'all_products': all_products,
+        'product_to_edit': ProductInfo.objects.get(id=product_id),
+    }
+    return render(request, 'productedit.html', context)
+
+
 # Redirect Admin  Functions**************************
 
 
