@@ -33,6 +33,7 @@ urlpatterns = [
 
     # Trial Run    ----> Might need this for modal?
     # path('dashboard/product/deleteconfirm/<int:product_id>', views.productdelete),
-    path('dashboard/product/modal_edit/<int:product_id>', views.modal_edit),
+    # path('dashboard/product/modal_edit/<int:product_id>', views.modal_edit),
 
+    # path('dashboard/product/modal_edit/(?P<pk>\d+)', views.modal_edit),
 ]

@@ -40,10 +40,92 @@
             <form id="searchbar" method="GET">
                 <p>
                     <button type="submit">Search</button>
-                    <input type="text" placeholder="Search..." name="q">
+                    <!-- height is squished.. added 25px -->
+                    <input type="text" style="height: 25px" placeholder="Search..." name="q">
                 </p>
             </form>
-            <a href="/dashboard/product/create"><button>Add New Product</button></a>
+            <!-- <a href="/dashboard/product/create"><button>Add New Product</button></a> -->
+
+            <!-- add new product modal -->
+            <a href="#" data-toggle="modal" data-target="#newProduct">
+                <button> Add New Product</button>
+            </a>
+            <div class="modal" tabindex="-1" role="dialog" id="newProduct">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title">Add A New Product</h2>
+
+                        </div>
+                        <div class="modal-body">
+
+
+                            <form action="/dashboard/product/process_create" method="post">
+                                {% csrf_token %}
+                                <main>
+                                    <div id="name">
+                                        <p>
+                                            <label>Name</label>
+                                            <input type="text" name="item_name">
+                                        </p>
+                                    </div>
+                                    <div id="price">
+                                        <p>
+                                            <label>Price</label>
+                                            <input type="number" step="any" name="item_price">
+                                        </p>
+                                    </div>
+                                    <div id="description">
+                                        <p>
+                                            <label>Description</label>
+                                            <textarea name="item_description"></textarea>
+                                        </p>
+                                    </div>
+                                    <div id="size">
+                                        <p>
+                                            <label>Size</label>
+                                            <select name="item_size">
+                                                <option value="sml">Small</option>
+                                                <option value="med">Medium</option>
+                                                <option value="lrg">Large</option>
+                                            </select>
+                                        </p>
+                                    </div>
+                                    <div id="categories">
+                                        <p>
+                                            <label>Category</label>
+                                            <select name="category">
+                                                <option value="Sandal">Sandal</option>
+                                                <option value="Clog">Clog</option>
+                                                <option value="WaterFriendly">WaterFriendly</option>
+                                            </select>
+                                        </p>
+                                    </div>
+
+                                </main>
+
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <!-- <a href="/dashboard/products"><button id="cancel">Cancel</button>
+                                <span aria-hidden="true">&times;</span> -->
+                            <a href="/dashboard/products"><button type="button" data-dismiss="modal"
+                                    aria-label="Close">Cancel
+                                    <!-- <span aria-hidden="true">&times;</span> -->
+                                </button></a>
+                            <a href="#"><button type="submit" value="Submit" id="create">Create</button></a>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
         </div>
         <div id="products">
             {%block products%}
@@ -59,12 +141,6 @@
                     </tr>
                 </thead>
                 <tbody>
-
-
-
-
-
-
                     {% if query %}
                     {% for product in query %}
                     <tr>
@@ -74,13 +150,14 @@
                         <td>{{product.store_count}}</td>
                         <td>{context: product.item_sold}</td>
                         <td>
-                            <a href="/dashboard/product/edit/{{product.id}}">Edit</a>
 
-                            <a href="/dashboard/product/modal_edit/{{product.id}}" data-toggle="modal"
-                                data-target="#editProduct">
-                                Edit Modal
+                            <!-- edit product modal with loop. -->
+                            <!-- must pass product.id through href, target, and div ID (similar to key =i in react) to prevent first in list form editing. -->
+                            <a href="editProduct{{product.id}}" data-toggle="modal"
+                                data-target="#editProduct{{product.id}}">
+                                Edit
                             </a>
-                            <div class="modal" tabindex="-1" role="dialog" id="editProduct">
+                            <div class="modal" tabindex="-1" role="dialog" id="editProduct{{product.id}}">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -126,16 +203,8 @@
                                                             </select>
                                                         </p>
                                                     </div>
-                                                    <!-- <div id="actions">
-                                                        <a href="/dashboard/products"><button
-                                                                id="cancel">Cancel</button></a>
-                                                        <a href="#"><button type="submit" value="Submit"
-                                                                id="update">Update</button></a>
-                                                    </div> -->
+
                                                 </main>
-
-
-
                                         </div>
                                         <div class="modal-footer">
                                             <a href="/dashboard/products"><button id="cancel">Cancel</button></a>
@@ -146,19 +215,12 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-
-                            <!-- <a href="/dashboard/product/delete/{{product.id}}">Delete</a> -->
-
-
-
-                            <!-- works. but will only delete first product in list-->
-                            <a href="" data-toggle="modal" data-target="#deleteProduct">
-                                Delete Modal
+                            <!-- delete product modal with loop. -->
+                            <a href="deleteProducts{{product.id}}" data-toggle="modal"
+                                data-target="#deleteProduct{{product.id}}">
+                                Delete
                             </a>
-                            <div class="modal" tabindex="-1" role="dialog" id="deleteProduct">
+                            <div class="modal" tabindex="-1" role="dialog" id="deleteProduct{{product.id}}">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -175,7 +237,7 @@
                                             <button type="button" class="btn btn-secondary"
                                                 data-dismiss="modal">Cancel</button>
                                             <a href="/dashboard/product/delete/{{product.id}}"><button
-                                                    class="btn btn-primary">Confirm Delete (from query)</button></a>
+                                                    class="btn btn-primary danger">Confirm Delete </button></a>
                                         </div>
                                     </div>
                                 </div>
