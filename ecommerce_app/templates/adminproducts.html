@@ -128,6 +128,7 @@
 
         </div>
         <div id="products">
+            <p>Showing Page {{ page }} of {{ end_index }}</p>
             {%block products%}
             <table>
                 <thead>
@@ -246,7 +247,7 @@
                     </tr>
                     {% endfor %}
                     {% else %}
-                    {% for product in all_products %}
+                    {% for product in products %}
                     <tr>
                         <td><img src="" alt="item_picture"></td>
                         <td>{{product.id}}</td>
@@ -256,7 +257,6 @@
                         <td>
                             <a href="/dashboard/product/edit/{{product.id}}">Edit</a>
                             <a href="/dashboard/product/deleteconfirm/{{product.id}}">Delete</a>
-                            <!-- works. but will only delete first product in list-->
                             <a href="" data-toggle="modal" data-target="#deleteProduct">
                                 Modal
                             </a>
@@ -283,12 +283,10 @@
                                     </div>
                                 </div>
                             </div>
-
                         </td>
                     </tr>
                     {% endfor %}
                     {% endif %}
-
                 </tbody>
             </table>
             {%endblock%}
@@ -296,11 +294,27 @@
     </main>
     <footer class="align">
         <div id="page_selector">
-            <p><a href="">1</a></p>
-            <p><a href="">2</a></p>
-            <p><a href="">3</a></p>
-            <p><a href="">4</a></p>
-            <p><a href="">-></a></p>
+            {% if products.has_other_pages %}
+                <ul>
+                    {% if products.has_previous %}
+                        <li><a href="?page={{ products.previous_page_number }}&q=''">&laquo; Previous</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                    {% for index in products.paginator.page_range %}
+                        {% if products.number == index %}
+                            <li class="active"><span>{{ index }} - current</span></li>
+                        {% else %}
+                            <li><a href="?page={{ index }}&q=''"></a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if products.has_next %}
+                        <li><a href="?page={{ products.next_page_number }}&q=''">Next &raquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&raquo;</span></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
         </div>
     </footer>
 

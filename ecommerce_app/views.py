@@ -104,13 +104,25 @@ def admin_orders(request):
 
 
 def admin_products(request):
-    all_products = ProductInfo.objects.all()
-
     query = ""
     if request.GET:
         query = request.GET['q']
+
+    product_list = ProductInfo.objects.get_queryset().order_by('id')
+    paginator = Paginator(product_list, 7)
+    page = request.GET.get('page', 1)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+
     context = {
-        'all_products': all_products,
+        'all_products': product_list,
+        'products': products,
+        'page': page,
+        'end_index': paginator.num_pages,
         'query': get_product_queryset(query)
     }
 

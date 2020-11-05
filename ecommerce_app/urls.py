@@ -14,12 +14,12 @@ urlpatterns = [
     path('dashboard/products', views.admin_products),
     path('dashboard/product/create', views.product_create),
     path('admin/dash/show', views.admin_dash_show),
-    path('dashboard/product/edit/<int:product_id>', views.product_edit),
+    # path('dashboard/product/edit/<int:product_id>', views.product_edit),
 
     # Redirect Admin Paths*********************************
     path('dashboard/product/process_create', views.product_process_create),
     path('dashboard/product/process_edit/<int:product_id>',
-         views.product_process_edit),
+        views.product_process_edit),
     path('dashboard/product/delete/<int:product_id>', views.product_delete),
     path('admin_logout', views.admin_logout),
     path('admin_login', views.admin_login),
